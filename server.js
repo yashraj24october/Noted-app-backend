@@ -8,7 +8,7 @@ const fs          = require('fs');
 dotenv.config();
 
 const app     = express();
-const IS_PROD = process.env.NODE_ENV === 'production';
+// const IS_PROD = process.env.NODE_ENV === 'production';
 
 // ─── Core middleware ──────────────────────────────────
 // app.use(cors({
@@ -18,22 +18,22 @@ const IS_PROD = process.env.NODE_ENV === 'production';
 //   credentials: true,
 // }));
 
-if (IS_PROD) {
-  const frontendDist = path.join(__dirname, '../frontend/dist');
+// if (IS_PROD) {
+//   const frontendDist = path.join(__dirname, '../frontend/dist');
   
-  // Only try to serve if the folder actually exists
-  if (fs.existsSync(frontendDist)) {
-    app.use(express.static(frontendDist));
-    app.get('*', (_req, res) => {
-      res.sendFile(path.join(frontendDist, 'index.html'));
-    });
-  } else {
-    // Fallback so the root URL doesn't crash the server
-    app.get('/', (req, res) => {
-      res.json({ message: "Backend is live. Frontend build not found." });
-    });
-  }
-}
+//   // Only try to serve if the folder actually exists
+//   if (fs.existsSync(frontendDist)) {
+//     app.use(express.static(frontendDist));
+//     app.get('*', (_req, res) => {
+//       res.sendFile(path.join(frontendDist, 'index.html'));
+//     });
+//   } else {
+//     // Fallback so the root URL doesn't crash the server
+//     app.get('/', (req, res) => {
+//       res.json({ message: "Backend is live. Frontend build not found." });
+//     });
+//   }
+// }
 
 
 app.use(express.json({ limit: '10mb' }));
