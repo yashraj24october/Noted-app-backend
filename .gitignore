@@ -1,0 +1,78 @@
+# ==========================================
+# 1. OS & IDE Files (Clean Workspace)
+# ==========================================
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ==========================================
+# 2. Dependencies (Never commit these!)
+# ==========================================
+node_modules/
+bower_components/
+
+# ==========================================
+# 3. Environment & Secrets (SECURITY CRITICAL)
+# ==========================================
+# Ignore all actual environment files
+.env
+.env.local
+.env.production
+.env.development
+.env.*.local
+
+# If you use the 'envs' folder approach we discussed:
+envs/*.env
+!envs/*.env.example
+
+# If you use the JS Config approach for Frontend:
+configs/config.js
+!configs/config.example.js
+
+# Ignore local database data
+mongo-data/
+
+docker-compose copy.yml
+docker-compose copy 2.yml
+docker-compose copy 3.yml
+docker-compose--pushed.yml
+
+
+# ==========================================
+# 4. Build & Distribution (Handled by Docker)
+# ==========================================
+# We don't need these because Docker Hub stores the build
+dist/
+build/
+out/
+.next/
+.cache/
+
+# ==========================================
+# 5. Docker Specifics
+# ==========================================
+# Ignore local data persistence (Don't commit your local DB data!)
+docker/mongodb_data/
+docker/mysql_data/
+docker/redis_data/
+.docker/
+
+# ==========================================
+# 6. Testing & Coverage
+# ==========================================
+coverage/
+*.lcov
+.nyc_output/
+
+# ==========================================
+# 7. Terraform / Infrastructure (If applicable)
+# ==========================================
+.terraform/
+*.tfstate
+*.tfstate.backup
