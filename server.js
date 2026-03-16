@@ -11,12 +11,31 @@ const app     = express();
 const IS_PROD = process.env.NODE_ENV === 'production';
 
 // ─── Core middleware ──────────────────────────────────
-app.use(cors({
-  origin:      IS_PROD
-                 ? process.env.FRONTEND_URL   // e.g. https://noted.yourdomain.com
-                 : ['http://localhost:3000', 'http://127.0.0.1:3000'],
-  credentials: true,
-}));
+// app.use(cors({
+//   origin:      IS_PROD
+//                  ? process.env.FRONTEND_URL   // e.g. https://noted.yourdomain.com
+//                  : ['http://localhost:3000', 'http://127.0.0.1:3000'],
+//   credentials: true,
+// }));
+
+if (IS_PROD) {
+  const frontendDist = path.join(__dirname, '../frontend/dist');
+  
+  // Only try to serve if the folder actually exists
+  if (fs.existsSync(frontendDist)) {
+    app.use(express.static(frontendDist));
+    app.get('*', (_req, res) => {
+      res.sendFile(path.join(frontendDist, 'index.html'));
+    });
+  } else {
+    // Fallback so the root URL doesn't crash the server
+    app.get('/', (req, res) => {
+      res.json({ message: "Backend is live. Frontend build not found." });
+    });
+  }
+}
+
+
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cookieParser());
