@@ -59,34 +59,36 @@ app.use((err, _req, res, _next) => {
 // ─── Connect DB and start server ─────────────────────
 const PORT = process.env.PORT || 5000;
 
-// mongoose.connect(process.env.MONGO_URI)
-//   .then(() => {
-//     console.log('✅  MongoDB connected');
-//     app.listen(PORT, () => {
-//       console.log(`🚀  Server on port ${PORT}  [${process.env.NODE_ENV}]`);
-//     });
-//   })
-//   .catch(err => {
-//     console.error('❌  MongoDB connection error:', err);
-//     process.exit(1);
-//   });
-
-let isConnected = false;
-
-async function connectToMongodDB() {
-  try {
-    await mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => {
     console.log('✅  MongoDB connected');
-    isConnected = true;
-  }
-  catch (err) {
+    app.listen(PORT, () => {
+      console.log(`🚀  Server on port ${PORT}  [${process.env.NODE_ENV}]`);
+    });
+  })
+  .catch(err => {
     console.error('❌  MongoDB connection error:', err);
-  }
-}
-app.use(async (req, res, next) => {
-  if (!isConnected) {
-    await connectToMongodDB();
-  }
-  next();
-});
+    process.exit(1);
+  });
+
+// let isConnected = false;
+
+// async function connectToMongodDB() {
+//   try {
+//     await mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+//     console.log('✅  MongoDB connected');
+//     isConnected = true;
+//   }
+//   catch (err) {
+//     console.error('❌  MongoDB connection error:', err);
+//   }
+// }
+// app.use(async (req, res, next) => {
+//   if (!isConnected) {
+//     await connectToMongodDB();
+//   }
+//   next();
+// });
+
+
 module.exports = app;
