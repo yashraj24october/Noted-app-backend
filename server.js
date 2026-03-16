@@ -4,7 +4,7 @@ const cors         = require('cors');
 const cookieParser = require('cookie-parser');
 const dotenv       = require('dotenv');
 const path         = require('path');
-
+import fs from 'fs';
 dotenv.config();
 
 const app     = express();
