@@ -40,6 +40,10 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cookieParser());
 
+app.get('/api', (_req, res) =>
+  res.json({ status: 'OK', timestamp: new Date().toISOString() , message: 'Welcome to the Noted API!, Backend running well.' })
+);
+
 // ─── API Routes ──────────────────────────────────────
 app.use('/api/auth',      require('./routes/auth'));
 app.use('/api/notes',     require('./routes/notes'));
@@ -56,15 +60,15 @@ app.get('/api/health', (_req, res) =>
 
 // ─── Serve React frontend in production ──────────────
 // Express serves the Vite build — no separate web server needed
-if (IS_PROD) {
-  const frontendDist = path.join(__dirname, '../frontend/dist');
-  app.use(express.static(frontendDist));
+// if (IS_PROD) {
+//   const frontendDist = path.join(__dirname, '../frontend/dist');
+//   app.use(express.static(frontendDist));
 
-  // All non-API routes go to React (client-side routing)
-  app.get('*', (_req, res) => {
-    res.sendFile(path.join(frontendDist, 'index.html'));
-  });
-}
+//   // All non-API routes go to React (client-side routing)
+//   app.get('*', (_req, res) => {
+//     res.sendFile(path.join(frontendDist, 'index.html'));
+//   });
+// }
 
 // ─── Global error handler ────────────────────────────
 app.use((err, _req, res, _next) => {
