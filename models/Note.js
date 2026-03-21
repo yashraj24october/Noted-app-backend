@@ -18,7 +18,7 @@ const noteSchema = new mongoose.Schema({
   },
   contentType: {
     type: String,
-    enum: ['text', 'markdown', 'code'],
+    enum: ['text', 'markdown', 'html', 'code'],
     default: 'markdown'
   },
   tags: [{
@@ -108,7 +108,8 @@ noteSchema.index({ user: 1, isPinned: -1 });
 // Auto-calculate word count and read time
 noteSchema.pre('save', function(next) {
   if (this.isModified('content')) {
-    const words = this.content.trim().split(/\s+/).filter(w => w).length;
+    const plainText = this.content.replace(/<[^>]*>/g, ' ').trim()
+    const words = plainText.split(/\s+/).filter(w => w).length;
     this.wordCount = words;
     this.readTime = Math.ceil(words / 200);
     this.lastEditedAt = new Date();

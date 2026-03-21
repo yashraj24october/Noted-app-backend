@@ -31,14 +31,17 @@ router.get('/', async (req, res) => {
     if (priority) query.priority = priority;
 
     if (search) {
-      // $regex gives character-by-character search (partial match)
-      // $text requires full words — we switch to regex for better UX
-      const rx = new RegExp(search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i')
+      // Escape special regex chars, then match across title/tags/subject as-is
+      // For content — also strip HTML so we match plain text inside rich notes
+      const escaped = search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+      const rx = new RegExp(escaped, 'i')
+      const rxHtml = new RegExp(escaped.replace(/</g, '&lt;'), 'i')
       query.$or = [
         { title:   rx },
-        { content: rx },
         { subject: rx },
         { tags:    rx },
+        // Match raw content (works for both markdown and HTML with text visible)
+        { content: rx },
       ]
     }
 
