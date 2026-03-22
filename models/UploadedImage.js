@@ -34,9 +34,13 @@ const imageSchema = new mongoose.Schema({
     default: Date.now,
   },
   uploadedBy: {
-    type:    String,    // user _id as string
+    type:    String,
     default: 'anonymous',
   },
-}, { _id: false });     // disable auto-id — we use fileHash as _id
+  cloudinaryUrl: {        // permanent Cloudinary URL (null for local/legacy)
+    type:    String,
+    default: null,
+  },
+}, { _id: false });
 
-module.exports = mongoose.model('UploadedImages', imageSchema);
+module.exports = mongoose.model('sys_UploadedImages', imageSchema);
