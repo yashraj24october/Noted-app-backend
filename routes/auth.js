@@ -51,11 +51,11 @@ const clearTokenCookies = (res) => {
 // ─── Token generators ─────────────────────────────────────────────────────────
 
 /**
- * Short-lived access token — 15 minutes
+ * Short-lived access token — 1 hour
  * Used by the protect middleware to verify every API request
  */
 const generateAccessToken = (userId) =>
-  jwt.sign({ id: userId }, process.env.JWT_SECRET, { expiresIn: '15m' });
+  jwt.sign({ id: userId }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
 /**
  * Long-lived refresh token — 7 days
